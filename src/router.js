@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import ReceptionTable from "./views/ReceptionTable.vue";
+import GuestForm from "./components/GuestForm.vue";
+// import ReceptionTable from "./views/ReceptionTable.vue";
 
 Vue.use(Router);
 
@@ -9,7 +10,7 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: ReceptionTable
+      component: GuestForm
     }
   ]
 });
