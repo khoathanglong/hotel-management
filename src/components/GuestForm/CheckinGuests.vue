@@ -8,7 +8,8 @@
       <el-table :data="tableData">
         <el-table-column prop="sequence" label="#"> </el-table-column>
         <el-table-column prop="name" label="Họ tên"> </el-table-column>
-        <el-table-column prop="id" label="CMND/Passport"> </el-table-column>
+        <el-table-column class="hidden-xs-only" prop="id" label="CMND/Passport">
+        </el-table-column>
         <el-table-column prop="room" label="Số phòng"> </el-table-column>
       </el-table>
     </div>
