@@ -1,22 +1,6 @@
 <template>
-  <el-card class="guessForm" shadow="never">
-    <div slot="header" class="clearfix">
-      {{ title }}
-    </div>
-    <!-- <div class="el-card__body--roomSelection">
-      <div class="header">Loại phòng</div>
-      <el-tree
-        :data="availableRooms"
-        show-checkbox
-        node-key="id"
-        :default-checked-keys="[101]"
-        :default-expanded-keys="[101]"
-        @check-change="handleCheckChanged"
-        :getCheckedKeys="true"
-        ref="tree"
-      >
-      </el-tree>
-    </div> -->
+  <el-card class="guestForm" shadow="never">
+    <div slot="header" class="clearfix">{{ title }}</div>
     <el-row>
       <el-col :xs="12" :sm="8">
         <div class="header">Loại phòng</div>
@@ -24,13 +8,12 @@
           :data="availableRooms"
           show-checkbox
           node-key="id"
-          :default-checked-keys="[101]"
-          :default-expanded-keys="[101]"
+          :default-checked-keys="defaultCheckedKeys"
+          :default-expanded-keys="selectedRoomTypes"
           @check-change="handleCheckChanged"
           :getCheckedKeys="true"
           ref="tree"
-        >
-        </el-tree>
+        ></el-tree>
       </el-col>
       <el-col :xs="12" :sm="9">
         <div class="header">Giờ trả phòng</div>
@@ -38,8 +21,7 @@
           v-model="time"
           type="datetime"
           placeholder="Chọn ngày và giờ"
-        >
-        </el-date-picker>
+        ></el-date-picker>
       </el-col>
       <el-col :xs="12" :sm="6">
         <div class="header">Tổng số khách</div>
@@ -51,77 +33,76 @@
         ></el-input-number>
       </el-col>
     </el-row>
-
-    <CheckinGuests />
   </el-card>
 </template>
 
 <script>
-import CheckinGuests from "./CheckinGuests.vue";
 export default {
-  components: {
-    CheckinGuests
-  },
   props: {
     title: {
       type: String,
       default: "Check in"
+    },
+    selectedRooms: {
+      type: Array,
+      default: () => []
+    },
+    selectedRoomTypes: {
+      type: Array,
+      default: () => [1]
+    },
+    checkoutDateTime: {
+      type: Date,
+      default: null
+    },
+    totalGuests: {
+      type: Number,
+      default: 1
+    },
+    availableRooms: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
     return {
-      time: "",
-      numberOfGuests: 1,
-      availableRooms: [
-        {
-          id: 1,
-          label: "Superior",
-          children: [
-            {
-              id: 101,
-              label: 101
-            },
-            {
-              id: 102,
-              label: 102
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "Standard",
-          children: [
-            {
-              id: 201,
-              label: 201
-            },
-            {
-              id: 202,
-              label: 202
-            }
-          ]
-        }
-      ],
-      selectedRooms: []
+      defaultCheckedKeys: []
     };
+  },
+  computed: {
+    time: {
+      get() {
+        return this.checkoutDateTime;
+      },
+      set(value) {
+        this.$emit("SetCheckoutDateTime", value);
+      }
+    },
+    numberOfGuests: {
+      get() {
+        return this.totalGuests;
+      },
+      set(value) {
+        this.$emit("SetTotalGuests", value);
+      }
+    }
   },
   methods: {
     handleCheckChanged() {
-      const checkedNodes = this.$refs.tree.getCheckedKeys();
       // getCheckedKeys return both parent and children node
-      // filter to get only children checked
-      this.selectedRooms = checkedNodes.filter(each => each > 10);
-      // each tree node parent has value id under 10
+      const checkedNodes = this.$refs.tree.getCheckedKeys();
+      this.$emit("SelectRooms", checkedNodes);
     }
   },
   mounted() {
-    this.handleCheckChanged();
+    // to avoid mutating props
+    this.defaultCheckedKeys = this.selectedRooms;
   }
 };
 </script>
 
 <style lang="scss">
-.guessForm {
+.guestForm {
   border: none !important;
   .el-card {
     &__header {

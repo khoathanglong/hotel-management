@@ -52,7 +52,6 @@
     </el-form-item>
 
     <el-form-item style="text-align: right;">
-      <el-button @click="$emit('DeleteGuest')">XÓA</el-button>
       <el-button type="primary" @click="triggerSaveForm">LƯU</el-button>
     </el-form-item>
   </el-form>
@@ -86,15 +85,15 @@ export default {
       },
       rules: {
         fullName: [
-          { required: true, message: "Vui long dien ho ten cua khach." }
+          { required: true, message: "Vui lòng điền họ tên của khách." }
         ],
-        roomNo: [{ required: true, message: "Vui long chon so phong." }]
+        roomNo: [{ required: true, message: "Vui lòng chọn số phòng." }]
       }
     };
   },
   computed: {
     formData() {
-      return this.form;
+      return Object.assign({}, this.form);
     },
     adult: {
       get() {

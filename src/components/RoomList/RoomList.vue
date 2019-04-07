@@ -1,8 +1,6 @@
 <template>
   <el-card class="roomTable">
-    <div slot="header" class="clearfix">
-      Danh sách phòng
-    </div>
+    <div slot="header" class="clearfix">Danh sách phòng</div>
     <el-row class="filterButtons">
       <el-col :md="4" :sm="24">
         <el-radio v-model="filteredRadio" label="all">Tất cả</el-radio>
@@ -69,7 +67,8 @@ export default {
     handleRowClick(row) {
       this.$emit("openCheckinForm", row);
       // open form dialog
-    }
+    },
+    handleBooking() {}
   }
 };
 </script>
