@@ -3,7 +3,7 @@
     <div slot="header" class="clearfix">
       Danh sách phòng
     </div>
-    <el-row class="filterButtons" align="middle">
+    <el-row class="filterButtons">
       <el-col :md="4" :sm="24">
         <el-radio v-model="filteredRadio" label="all">Tất cả</el-radio>
       </el-col>
@@ -19,7 +19,7 @@
         <el-input placeholder="Tìm kiếm theo số phòng"></el-input>
       </el-col>
     </el-row>
-    <el-button type="primary" @click="handeBooking">Đặt trước</el-button>
+    <el-button type="primary" @click="handleBooking">Đặt trước</el-button>
     <el-table
       :data="tableData"
       stripe
@@ -67,7 +67,8 @@ export default {
   },
   methods: {
     handleRowClick(row) {
-      console.log(row);
+      this.$emit("openCheckinForm", row);
+      // open form dialog
     }
   }
 };
@@ -83,6 +84,7 @@ export default {
       .clearfix {
         text-align: left;
         font-weight: bold;
+        font-size: 2em;
       }
     }
     &__body {

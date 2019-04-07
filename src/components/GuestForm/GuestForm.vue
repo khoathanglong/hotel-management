@@ -1,5 +1,5 @@
 <template>
-  <el-card class="guessForm">
+  <el-card class="guessForm" shadow="nevere">
     <div slot="header" class="clearfix">
       {{ title }}
     </div>
@@ -32,17 +32,7 @@
         >
         </el-tree>
       </el-col>
-      <el-col :xs="12" :sm="8">
-        <div class="header">Tổng số khách</div>
-        <el-input-number
-          v-model="numberOfGuests"
-          controls-position="right"
-          :min="1"
-          :max="6"
-        ></el-input-number>
-      </el-col>
-
-      <el-col :xs="12" :sm="8">
+      <el-col :xs="12" :sm="9">
         <div class="header">Giờ trả phòng</div>
         <el-date-picker
           v-model="time"
@@ -50,6 +40,15 @@
           placeholder="Chọn ngày và giờ"
         >
         </el-date-picker>
+      </el-col>
+      <el-col :xs="12" :sm="6">
+        <div class="header">Tổng số khách</div>
+        <el-input-number
+          v-model="numberOfGuests"
+          controls-position="right"
+          :min="1"
+          :max="6"
+        ></el-input-number>
       </el-col>
     </el-row>
 
@@ -121,10 +120,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .guessForm {
+  border: none !important;
   .el-card {
     &__header {
+      padding: 0 !important;
       .clearfix {
         text-align: left !important;
         font-weight: bold !important;
