@@ -1,5 +1,5 @@
 <template>
-  <el-card class="guessForm" shadow="nevere">
+  <el-card class="guessForm" shadow="never">
     <div slot="header" class="clearfix">
       {{ title }}
     </div>
