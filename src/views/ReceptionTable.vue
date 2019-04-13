@@ -1,9 +1,6 @@
 <template>
   <div class="receptionTable">
-    <RoomList
-      @openCheckinForm="onOpenCheckinForm"
-      :roomList="filteredRoomList"
-    />
+    <RoomList @OpenForm="onOpenForm" :roomList="filteredRoomList" />
   </div>
 </template>
 
@@ -12,7 +9,7 @@
 import RoomList from "@/components/RoomList/RoomList.vue";
 // import GuestForm from "@/components/GuestForm/GuestForm.vue";
 // import { db } from "@/firebase.js";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   components: {
     RoomList
@@ -57,8 +54,12 @@ export default {
     }
   },
   methods: {
-    onOpenCheckinForm(row) {
-      this.$router.push(`/check-in/${row.roomNo}`);
+    ...mapMutations(["setSelectedRoom"]),
+    onOpenForm(row) {
+      this.setSelectedRoom(row.roomNo);
+      if (row.isAvailable) {
+        this.$router.push("/check-in");
+      } else this.$router.push("/check-out");
     }
   },
   // firestore: {

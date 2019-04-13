@@ -1,8 +1,7 @@
 <template>
   <el-card class="guestForm" shadow="never">
-    <div slot="header" class="clearfix">{{ title }}</div>
     <el-row :gutter="20">
-      <el-col :xs="12" :sm="8">
+      <el-col :xs="24" :sm="12">
         <div class="header">Chọn phòng</div>
         <el-select
           v-model="localSelectedRooms"
@@ -10,6 +9,7 @@
           collapse-tags
           filterable
           placeholder="Chọn phòng"
+          style="width: 100%;"
         >
           <el-option-group
             v-for="group in availableRooms"
@@ -25,22 +25,14 @@
           </el-option-group>
         </el-select>
       </el-col>
-      <el-col :xs="12" :sm="8">
+      <el-col :xs="24" :sm="12">
         <div class="header">Giờ trả phòng</div>
         <el-date-picker
           v-model="time"
           type="datetime"
           placeholder="Chọn ngày và giờ"
+          style="width: 100%;"
         ></el-date-picker>
-      </el-col>
-      <el-col :xs="12" :sm="8">
-        <div class="header">Tổng số khách</div>
-        <el-input-number
-          v-model="numberOfGuests"
-          controls-position="right"
-          :min="0"
-          :max="6"
-        ></el-input-number>
       </el-col>
     </el-row>
   </el-card>
@@ -49,10 +41,6 @@
 <script>
 export default {
   props: {
-    title: {
-      type: String,
-      default: "Check in"
-    },
     selectedRooms: {
       type: Array,
       default: () => []
@@ -64,10 +52,6 @@ export default {
     checkoutDateTime: {
       type: Date,
       default: null
-    },
-    totalGuests: {
-      type: Number,
-      default: 1
     },
     availableRooms: {
       type: Array,
@@ -81,14 +65,6 @@ export default {
       },
       set(value) {
         this.$emit("SetCheckoutDateTime", value);
-      }
-    },
-    numberOfGuests: {
-      get() {
-        return this.totalGuests;
-      },
-      set(value) {
-        this.$emit("SetTotalGuests", value);
       }
     },
     localSelectedRooms: {
@@ -107,15 +83,8 @@ export default {
 .guestForm {
   border: none !important;
   .el-card {
-    &__header {
-      padding: 0 !important;
-      .clearfix {
-        text-align: left !important;
-        font-weight: bold !important;
-        font-size: 2em;
-      }
-    }
     &__body {
+      padding: 0;
       &--roomSelection {
         text-align: left !important;
         span {

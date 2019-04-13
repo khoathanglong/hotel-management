@@ -1,9 +1,19 @@
 <template>
   <div class="checkinGuests">
-    <div class="checkinGuests--alignLeft">Danh Sách Khách</div>
-    <div class="checkinGuests--alignLeft">
-      <el-button type="primary" @click="$emit('ClickAddButton')"
+    <div class="checkinGuests--alignLeft">Danh sách khách</div>
+    <div
+      class="checkinGuests--alignLeft"
+      v-if="$route.fullPath.includes('check-in')"
+    >
+      <el-button
+        type="primary"
+        @click="$emit('ClickAddButton')"
+        :disabled="guestsList.length >= maxGuests"
+        style="margin-right: 10px;"
         >Thêm khách</el-button
+      >
+      <span style="font-weight: normal; font-size: 12px; font-style: italic;"
+        >(Số khách tối đa: {{ maxGuests }})</span
       >
     </div>
     <el-table :data="tableData">
@@ -15,7 +25,12 @@
         label="ID"
       ></el-table-column>
       <el-table-column prop="roomNo" label="Số phòng"></el-table-column>
-      <el-table-column class-name="icons" label="Sửa/Xóa">
+      <el-table-column
+        class-name="icons"
+        label="Sửa/Xóa"
+        align="center"
+        v-if="$route.fullPath.includes('check-in')"
+      >
         <template slot-scope="scope">
           <i class="el-icon-edit" @click="$emit('EditGuest', scope.$index)"></i>
           <i
@@ -34,6 +49,10 @@ export default {
     guestsList: {
       type: Array,
       default: () => []
+    },
+    maxGuests: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
@@ -65,8 +84,6 @@ export default {
           .el-table__row {
             .icons {
               .cell {
-                text-align: center;
-
                 i {
                   cursor: pointer;
 

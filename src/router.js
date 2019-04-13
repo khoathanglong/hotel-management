@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import ReceptionTable from "./views/ReceptionTable.vue";
 import CheckinForm from "./views/CheckinForm.vue";
-import Receipt from "./components/Payment/Receipt.vue";
+import CheckoutForm from "./views/CheckoutForm.vue";
 
 Vue.use(Router);
 
@@ -14,14 +14,14 @@ export default new Router({
       component: ReceptionTable
     },
     {
-      path: "/check-in/:roomNo",
+      path: "/check-in",
       name: "Checkin Form",
       component: CheckinForm
     },
     {
-      path: "/payment",
-      name: "Payment",
-      component: Receipt
+      path: "/check-out",
+      name: "Checkout Form",
+      component: CheckoutForm
     }
   ]
 });

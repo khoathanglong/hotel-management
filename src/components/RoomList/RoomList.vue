@@ -19,8 +19,7 @@
           v-model.number="roomFiltered"
           maxlength="3"
           prefix-icon="el-icon-search"
-        >
-        </el-input>
+        ></el-input>
       </el-col>
     </el-row>
     <el-button type="primary" @click="handleBooking">Đặt trước</el-button>
@@ -110,14 +109,7 @@ export default {
   },
   methods: {
     handleRowClick(room) {
-      if (!room.isAvailable) {
-        this.$message({
-          message: "Phòng " + room.roomNo + " đang có khách ở",
-          type: "warning"
-        });
-        return;
-      }
-      this.$emit("openCheckinForm", room);
+      this.$emit("OpenForm", room);
     },
 
     handleBooking() {}

@@ -1,21 +1,28 @@
 <template>
   <el-card class="checkin-form">
+    <div slot="header" style="text-align: left;">
+      <span style="font-weight: bold; font-size: 24px;">CHECKIN</span>
+      <el-button
+        style="float: right; padding: 3px 0"
+        type="text"
+        circle
+        icon="el-icon-close"
+        @click="$router.go(-1)"
+      ></el-button>
+    </div>
     <GeneralCheckinInfo
-      title="Check in"
       :selected-rooms="selectedRooms"
-      :selected-room-types="selectedRoomTypes"
       :checkout-date-time="checkoutDateTime"
-      :total-guests="totalGuests"
       :available-rooms="availableRooms"
       @SetCheckoutDateTime="onSetCheckoutDateTime"
-      @SetTotalGuests="onSetTotalGuests"
       @SelectRooms="onSelectRooms"
     />
     <GuestsList
       @ClickAddButton="onClickAddButton"
       @EditGuest="onEditGuest"
       @DeleteGuest="onDeleteGuest"
-      :guestsList="guestsList"
+      :guests-list="guestsList"
+      :max-guests="maxGuests"
     />
     <div class="buttons">
       <el-button @click="$router.go(-1)">Thoát</el-button>
@@ -41,6 +48,7 @@
 import GeneralCheckinInfo from "@/components/CheckinForm/GeneralCheckinInfo.vue";
 import GuestsList from "@/components/CheckinForm/GuestsList.vue";
 import AddGuestForm from "@/components/CheckinForm/AddGuestForm.vue";
+import { mapMutations } from "vuex";
 export default {
   components: { GeneralCheckinInfo, GuestsList, AddGuestForm },
   data() {
@@ -49,7 +57,7 @@ export default {
       selectedRooms: [],
       selectedRoomTypes: [],
       checkoutDateTime: null,
-      totalGuests: 0,
+      maxGuests: 0,
       // availableRooms: [
       //   {
       //     id: 1,
@@ -65,20 +73,6 @@ export default {
       //       }
       //     ]
       //   },
-      //   {
-      //     id: 2,
-      //     label: "Standard",
-      //     children: [
-      //       {
-      //         id: 201,
-      //         label: 201
-      //       },
-      //       {
-      //         id: 202,
-      //         label: 202
-      //       }
-      //     ]
-      //   }
       // ],
       guestsList: [
         // {
@@ -95,6 +89,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["setSelectedRoom"]),
     filterAvailableRooms(roomList) {
       let roomTypeGroups = [];
       let groupId = 1;
@@ -131,11 +126,11 @@ export default {
     onSetCheckoutDateTime(value) {
       this.checkoutDateTime = value;
     },
-    onSetTotalGuests(value) {
-      this.totalGuests = value;
-    },
     onSelectRooms(selectedRoomIds) {
       this.selectedRooms = selectedRoomIds;
+      // TODO: create logic to set maximum guests count
+      // below code is temporary
+      this.maxGuests = this.selectedRooms.length * 2;
     },
     onEditGuest(index) {
       this.selectedGuestIndex = index;
@@ -158,7 +153,7 @@ export default {
       this.dialogVisible = true;
     },
     beforeCloseDialog() {
-      // delete line in the guest list if not fill in the form
+      // delete row in the guest list if not fill in the form
       const lastGuest = this.guestsList[this.selectedGuestIndex];
       if (!lastGuest.fullName)
         this.guestsList.splice(this.selectedGuestIndex, 1);
@@ -182,8 +177,8 @@ export default {
     }
   },
   mounted() {
-    const roomNo = this.$route.params.roomNo;
-    this.selectedRooms.push(Number(roomNo));
+    const roomNo = this.$store.state.selectedRoom;
+    if (roomNo) this.selectedRooms.push(Number(roomNo));
 
     for (let i = 0; i < this.availableRooms.length; i++) {
       const hasRoomNo = !!this.availableRooms[i].children.find(
@@ -194,6 +189,9 @@ export default {
         break;
       }
     }
+  },
+  beforeDestroy() {
+    this.setSelectedRoom(null); // reset value in store to null
   }
 };
 </script>

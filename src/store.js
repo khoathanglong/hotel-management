@@ -6,9 +6,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    rooms: []
+    rooms: [],
+    selectedRoom: null
   },
   mutations: {
+    setSelectedRoom(state, value) {
+      state.selectedRoom = value;
+    },
     ...vuexfireMutations
   },
   actions: {
