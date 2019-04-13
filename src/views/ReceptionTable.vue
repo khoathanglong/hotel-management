@@ -1,22 +1,19 @@
 <template>
   <div class="receptionTable">
-    <RoomList @openCheckinForm="displayDialog" />
-    <el-dialog :visible.sync="dialogVisible" width="80%">
-      <GuestForm />
-    </el-dialog>
+    <RoomList @openCheckinForm="onOpenCheckinForm" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import RoomList from "@/components/RoomList/RoomList.vue";
-import GuestForm from "@/components/GuestForm/GuestForm.vue";
+// import GuestForm from "@/components/GuestForm/GuestForm.vue";
 import { db } from "@/firebase.js";
 
 export default {
   components: {
-    RoomList,
-    GuestForm
+    RoomList
+    // GuestForm
   },
   data() {
     return {
@@ -25,9 +22,8 @@ export default {
     };
   },
   methods: {
-    displayDialog(row) {
-      console.log(row);
-      this.dialogVisible = true;
+    onOpenCheckinForm(row) {
+      this.$router.push(`/check-in/${row.roomNo}`);
     }
   },
   firestore: {

@@ -1,8 +1,6 @@
 <template>
   <el-card class="roomTable">
-    <div slot="header" class="clearfix">
-      Danh sách phòng
-    </div>
+    <div slot="header" class="clearfix">Danh sách phòng</div>
     <el-row class="filterButtons">
       <el-col :md="4" :sm="24">
         <el-radio v-model="filteredRadio" label="all">Tất cả</el-radio>
@@ -60,7 +58,7 @@ export default {
           roomType: "Phòng đôi",
           checkinTime: "5/4/2019, 16:20",
           checkoutTime: "6/4/2019, 16:20",
-          unitPrice: "500 000"
+          unitPrice: 500000
         }
       ]
     };
@@ -69,7 +67,8 @@ export default {
     handleRowClick(row) {
       this.$emit("openCheckinForm", row);
       // open form dialog
-    }
+    },
+    handleBooking() {}
   }
 };
 </script>
