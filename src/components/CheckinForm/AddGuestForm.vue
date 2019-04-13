@@ -1,6 +1,6 @@
 <template>
   <el-form
-    ref="form"
+    ref="addGuestForm"
     :model="formData"
     :rules="rules"
     label-width="30%"
@@ -8,7 +8,7 @@
     class="add-guest-info-form"
   >
     <el-form-item>
-      <el-radio-group v-model="adult">
+      <el-radio-group v-model="formData.adult" @change="updateAdultInfo">
         <el-radio :label="true">Người lớn</el-radio>
         <el-radio :label="false">Trẻ em (dưới 14 tuổi)</el-radio>
       </el-radio-group>
@@ -89,35 +89,23 @@ export default {
         ],
         roomNo: [{ required: true, message: "Vui lòng chọn số phòng." }]
       },
-      formData: Object.assign({}, this.form)
+      formData: { ...this.form }
     };
-  },
-  computed: {
-    adult: {
-      get() {
-        return this.formData.adult;
-      },
-      set(value) {
-        if (!value) {
-          this.formData.idNo = "";
-          this.formData.dateIssued = "";
-          this.formData.placeIssued = "";
-        }
-        this.formData.adult = value;
-      }
-    }
   },
   methods: {
     triggerSaveForm() {
-      this.$refs.form.validate(valid => {
-        if (valid) this.$emit("SaveGuestInfo", this.formData);
+      const self = this;
+      this.$refs.addGuestForm.validate(valid => {
+        if (valid) self.$emit("SaveGuestInfo", this.formData);
         else return false;
       });
-    }
-  },
-  watch: {
-    form(value) {
-      this.formData = Object.assign({}, value);
+    },
+    updateAdultInfo(isAdult) {
+      if (!isAdult) {
+        this.formData.idNo = "";
+        this.formData.dateIssued = "";
+        this.formData.placeIssued = "";
+      }
     }
   }
 };

@@ -24,6 +24,7 @@
       title="Thông tin khách"
     >
       <AddGuestForm
+        v-if="dialogVisible"
         :form="guestsList[selectedGuestIndex]"
         @SaveGuestInfo="onSaveGuestInfo"
       />
@@ -126,13 +127,21 @@ export default {
       this.dialogVisible = true;
     },
     beforeCloseDialog() {
+      // delete line in the guest list if not fill in the form
       const lastGuest = this.guestsList[this.selectedGuestIndex];
       if (!lastGuest.fullName)
         this.guestsList.splice(this.selectedGuestIndex, 1);
       this.dialogVisible = false;
     },
     onSaveGuestInfo(value) {
-      this.guestsList[this.selectedGuestIndex] = { ...value };
+      // save in firebase first, then update form if save succesfully
+      const { fullName, idNo, adult, roomNo, dateIssued, placeIssued } = value;
+      this.guestsList[this.selectedGuestIndex].fullName = fullName;
+      this.guestsList[this.selectedGuestIndex].idNo = idNo;
+      this.guestsList[this.selectedGuestIndex].adult = adult;
+      this.guestsList[this.selectedGuestIndex].dateIssued = dateIssued;
+      this.guestsList[this.selectedGuestIndex].placeIssued = placeIssued;
+      this.guestsList[this.selectedGuestIndex].roomNo = roomNo;
       this.dialogVisible = false;
     }
   },
