@@ -11,6 +11,8 @@
 // @ is an alias to /src
 import RoomList from "@/components/RoomList/RoomList.vue";
 import GuestForm from "@/components/GuestForm/GuestForm.vue";
+import { db } from "@/firebase.js";
+
 export default {
   components: {
     RoomList,
@@ -18,7 +20,8 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      rooms: []
     };
   },
   methods: {
@@ -26,7 +29,11 @@ export default {
       console.log(row);
       this.dialogVisible = true;
     }
-  }
+  },
+  firestore: {
+    rooms: db.collection("rooms")
+  },
+  mounted() {}
 };
 </script>
 
