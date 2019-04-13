@@ -23,7 +23,10 @@
       :before-close="beforeCloseDialog"
       title="Thông tin khách"
     >
-      <AddGuestForm :form="guestsList[selectedGuestIndex]" />
+      <AddGuestForm
+        :form="guestsList[selectedGuestIndex]"
+        @SaveGuestInfo="onSaveGuestInfo"
+      />
     </el-dialog>
   </el-card>
 </template>
@@ -126,6 +129,10 @@ export default {
       const lastGuest = this.guestsList[this.selectedGuestIndex];
       if (!lastGuest.fullName)
         this.guestsList.splice(this.selectedGuestIndex, 1);
+      this.dialogVisible = false;
+    },
+    onSaveGuestInfo(value) {
+      this.guestsList[this.selectedGuestIndex] = { ...value };
       this.dialogVisible = false;
     }
   },

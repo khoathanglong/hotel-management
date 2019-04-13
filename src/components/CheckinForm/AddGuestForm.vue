@@ -88,13 +88,11 @@ export default {
           { required: true, message: "Vui lòng điền họ tên của khách." }
         ],
         roomNo: [{ required: true, message: "Vui lòng chọn số phòng." }]
-      }
+      },
+      formData: Object.assign({}, this.form)
     };
   },
   computed: {
-    formData() {
-      return Object.assign({}, this.form);
-    },
     adult: {
       get() {
         return this.formData.adult;
@@ -115,6 +113,11 @@ export default {
         if (valid) this.$emit("SaveGuestInfo", this.formData);
         else return false;
       });
+    }
+  },
+  watch: {
+    form(value) {
+      this.formData = Object.assign({}, value);
     }
   }
 };
