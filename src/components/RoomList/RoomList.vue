@@ -127,6 +127,9 @@ export default {
 
 <style lang="scss">
 .roomTable {
+  td {
+    cursor: pointer;
+  }
   .cell {
     padding: 0 !important;
   }
@@ -148,6 +151,7 @@ export default {
       }
       .el-row {
         margin-bottom: 15px;
+
         .el-col {
           text-align: left !important;
           label {

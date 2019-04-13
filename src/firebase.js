@@ -10,7 +10,7 @@ var config = {
 };
 if (typeof firebase === "undefined")
   throw new Error(
-    "Có vấn đề với firebase, liên hệ lập trình viên để kiểm tra chi tiết"
+    "Có vấn đề với Firebase, liên hệ lập trình viên để kiểm tra chi tiết"
   );
 firebase.initializeApp(config);
 

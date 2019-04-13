@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card class="checkin-form">
     <GeneralCheckinInfo
       title="Check in"
       :selected-rooms="selectedRooms"
@@ -17,6 +17,10 @@
       @DeleteGuest="onDeleteGuest"
       :guestsList="guestsList"
     />
+    <div class="buttons">
+      <el-button @click="$router.go(-1)">Thoát</el-button>
+      <el-button type="success">Check-in</el-button>
+    </div>
 
     <el-dialog
       :visible.sync="dialogVisible"
@@ -26,6 +30,7 @@
       <AddGuestForm
         v-if="dialogVisible"
         :form="guestsList[selectedGuestIndex]"
+        :room-options="selectedRooms"
         @SaveGuestInfo="onSaveGuestInfo"
       />
     </el-dialog>
@@ -44,7 +49,7 @@ export default {
       selectedRooms: [],
       selectedRoomTypes: [],
       checkoutDateTime: null,
-      totalGuests: 1,
+      totalGuests: 0,
       // availableRooms: [
       //   {
       //     id: 1,
@@ -76,15 +81,15 @@ export default {
       //   }
       // ],
       guestsList: [
-        {
-          sequence: 0,
-          adult: true,
-          fullName: "John",
-          roomNo: "101",
-          idNo: "1234",
-          dateIssued: "",
-          placeIssued: ""
-        }
+        // {
+        //   sequence: 0,
+        //   adult: true,
+        //   fullName: "John",
+        //   roomNo: "101",
+        //   idNo: "1234",
+        //   dateIssued: "",
+        //   placeIssued: ""
+        // }
       ],
       selectedGuestIndex: null
     };
@@ -129,13 +134,7 @@ export default {
     onSetTotalGuests(value) {
       this.totalGuests = value;
     },
-    onSelectRooms(checkedNodes) {
-      /**
-       * checkedNodes include both parent and children nodes,
-       * filter to get only children checked,
-       * each tree node parent has value id under 10
-       **/
-      const selectedRoomIds = checkedNodes.filter(each => each > 10);
+    onSelectRooms(selectedRoomIds) {
       this.selectedRooms = selectedRoomIds;
     },
     onEditGuest(index) {
@@ -184,7 +183,7 @@ export default {
   },
   mounted() {
     const roomNo = this.$route.params.roomNo;
-    this.selectedRooms.push(roomNo);
+    this.selectedRooms.push(Number(roomNo));
 
     for (let i = 0; i < this.availableRooms.length; i++) {
       const hasRoomNo = !!this.availableRooms[i].children.find(
@@ -199,4 +198,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.checkin-form {
+  .buttons {
+    float: right;
+    margin: 30px 0 30px 0;
+  }
+}
+</style>

@@ -1,21 +1,31 @@
 <template>
   <el-card class="guestForm" shadow="never">
     <div slot="header" class="clearfix">{{ title }}</div>
-    <el-row>
+    <el-row :gutter="20">
       <el-col :xs="12" :sm="8">
-        <div class="header">Loại phòng</div>
-        <el-tree
-          :data="availableRooms"
-          show-checkbox
-          node-key="id"
-          :default-checked-keys="defaultCheckedKeys"
-          :default-expanded-keys="selectedRoomTypes"
-          @check-change="handleCheckChanged"
-          :getCheckedKeys="true"
-          ref="tree"
-        ></el-tree>
+        <div class="header">Chọn phòng</div>
+        <el-select
+          v-model="localSelectedRooms"
+          multiple
+          collapse-tags
+          filterable
+          placeholder="Chọn phòng"
+        >
+          <el-option-group
+            v-for="group in availableRooms"
+            :key="group.id"
+            :label="group.label"
+          >
+            <el-option
+              v-for="item in group.children"
+              :key="item.id"
+              :label="item.label"
+              :value="item.id"
+            ></el-option>
+          </el-option-group>
+        </el-select>
       </el-col>
-      <el-col :xs="12" :sm="9">
+      <el-col :xs="12" :sm="8">
         <div class="header">Giờ trả phòng</div>
         <el-date-picker
           v-model="time"
@@ -23,12 +33,12 @@
           placeholder="Chọn ngày và giờ"
         ></el-date-picker>
       </el-col>
-      <el-col :xs="12" :sm="6">
+      <el-col :xs="12" :sm="8">
         <div class="header">Tổng số khách</div>
         <el-input-number
           v-model="numberOfGuests"
           controls-position="right"
-          :min="1"
+          :min="0"
           :max="6"
         ></el-input-number>
       </el-col>
@@ -64,11 +74,6 @@ export default {
       default: () => []
     }
   },
-  data() {
-    return {
-      defaultCheckedKeys: []
-    };
-  },
   computed: {
     time: {
       get() {
@@ -85,18 +90,15 @@ export default {
       set(value) {
         this.$emit("SetTotalGuests", value);
       }
+    },
+    localSelectedRooms: {
+      get() {
+        return this.selectedRooms;
+      },
+      set(value) {
+        this.$emit("SelectRooms", value);
+      }
     }
-  },
-  methods: {
-    handleCheckChanged() {
-      // getCheckedKeys return both parent and children node
-      const checkedNodes = this.$refs.tree.getCheckedKeys();
-      this.$emit("SelectRooms", checkedNodes);
-    }
-  },
-  mounted() {
-    // to avoid mutating props
-    this.defaultCheckedKeys = this.selectedRooms;
   }
 };
 </script>

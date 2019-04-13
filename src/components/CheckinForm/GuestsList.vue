@@ -12,10 +12,10 @@
       <el-table-column
         class="hidden-xs-only"
         prop="idNo"
-        label="CMND/Passport"
+        label="ID"
       ></el-table-column>
       <el-table-column prop="roomNo" label="Số phòng"></el-table-column>
-      <el-table-column class-name="icons">
+      <el-table-column class-name="icons" label="Sửa/Xóa">
         <template slot-scope="scope">
           <i class="el-icon-edit" @click="$emit('EditGuest', scope.$index)"></i>
           <i

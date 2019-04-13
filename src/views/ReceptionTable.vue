@@ -12,7 +12,7 @@
 import RoomList from "@/components/RoomList/RoomList.vue";
 // import GuestForm from "@/components/GuestForm/GuestForm.vue";
 // import { db } from "@/firebase.js";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 export default {
   components: {
     RoomList
