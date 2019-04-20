@@ -14,17 +14,24 @@
         <el-radio v-model="filteredRadio" label="used">Đang sử dụng</el-radio>
       </el-col>
       <el-col class="roomFiltering" :md="{ span: 8, offset: 2 }" :sm="24">
-        <el-input placeholder="Tìm kiếm theo số phòng"></el-input>
+        <el-input
+          placeholder="Tìm kiếm theo số phòng"
+          v-model.number="roomFiltered"
+          maxlength="3"
+        >
+          <el-button slot="append" icon="el-icon-search"></el-button>
+        </el-input>
       </el-col>
     </el-row>
     <el-button type="primary" @click="handleBooking">Đặt trước</el-button>
     <el-table
-      :data="tableData"
+      :data="tableData ? tableData : []"
       stripe
+      height="70vh"
       style="width:100%"
       @row-click="handleRowClick"
     >
-      <el-table-column label="Phòng">
+      <el-table-column label="Phòng" sortable>
         <template slot-scope="scope">
           <i
             class="el-icon-circle-check"
@@ -39,35 +46,76 @@
           <span style="margin-left: 10px">{{ scope.row.roomNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="roomType" label="Loại Phòng"></el-table-column>
-      <el-table-column prop="checkinTime" label="Nhận phòng"></el-table-column>
-      <el-table-column prop="checkoutTime" label="Trả phòng"></el-table-column>
-      <el-table-column prop="unitPrice" label="Đơn giá"></el-table-column>
+      <el-table-column
+        sortable
+        prop="roomType"
+        label="Loại Phòng"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        prop="checkinTime"
+        label="Nhận phòng"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        prop="checkoutTime"
+        label="Trả phòng"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        prop="dailyPrice"
+        label="Giá qua đêm"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        prop="firstHourPrice"
+        label="Giá giờ đầu"
+      ></el-table-column>
+      <el-table-column
+        sortable
+        prop="secondHourPrice"
+        label="Giá giờ kế"
+      ></el-table-column>
     </el-table>
   </el-card>
 </template>
 
 <script>
 export default {
+  props: {
+    roomList: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       filteredRadio: "all",
-      tableData: [
-        {
-          roomNo: 101,
-          roomType: "Phòng đôi",
-          checkinTime: "5/4/2019, 16:20",
-          checkoutTime: "6/4/2019, 16:20",
-          unitPrice: 500000
-        }
-      ]
+      roomFiltered: null
     };
+  },
+  computed: {
+    tableData() {
+      // combine filter here
+      if (this.roomFiltered) {
+        return this.roomList.filter(room => {
+          return room.roomNo.toString().includes(this.roomFiltered.toString());
+        });
+      }
+      if (this.filteredRadio === "all") return this.roomList;
+      if (this.filteredRadio === "used")
+        return this.roomList.filter(room => !room.isAvailable);
+      return this.roomList.filter(room => room.isAvailable);
+    }
   },
   methods: {
     handleRowClick(row) {
       this.$emit("openCheckinForm", row);
       // open form dialog
     },
+    // sortByAvailability(a, b) {
+    //   return a.isAvailable - b.isAvailable;
+    // },
     handleBooking() {}
   }
 };

@@ -5,15 +5,24 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import "./plugins/element.js";
-import "./firebase.js";
 Vue.config.productionTip = false;
 // config firebase
 Vue.use(firestorePlugin);
 
-// define global variable
+Vue.config.productionTip = false;
+const fb = require("./firebase.js");
+Vue.prototype.$db = fb.db;
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+// handle page reloads
+let app;
+fb.auth.onAuthStateChanged(user => {
+  console.log(user);
+  if (!app) {
+    app = new Vue({
+      el: "#app",
+      router,
+      store,
+      render: h => h(App)
+    });
+  }
+});

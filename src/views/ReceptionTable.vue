@@ -1,6 +1,9 @@
 <template>
   <div class="receptionTable">
-    <RoomList @openCheckinForm="onOpenCheckinForm" />
+    <RoomList
+      @openCheckinForm="onOpenCheckinForm"
+      :roomList="filteredRoomList"
+    />
   </div>
 </template>
 
@@ -20,6 +23,37 @@ export default {
       dialogVisible: false,
       rooms: []
     };
+  },
+  computed: {
+    filteredRoomList() {
+      return (
+        this.rooms &&
+        this.rooms.map(each => {
+          const {
+            roomNo,
+            roomType,
+            checkinTime,
+            checkoutTime,
+            dailyPrice,
+            lateCheckout,
+            secondHourPrice,
+            firstHourPrice,
+            isAvailable
+          } = each;
+          return {
+            roomNo,
+            roomType,
+            checkinTime,
+            checkoutTime,
+            dailyPrice,
+            lateCheckout,
+            secondHourPrice,
+            firstHourPrice,
+            isAvailable
+          };
+        })
+      );
+    }
   },
   methods: {
     onOpenCheckinForm(row) {
