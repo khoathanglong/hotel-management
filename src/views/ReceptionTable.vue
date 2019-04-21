@@ -46,10 +46,10 @@ export default {
             roomType,
             checkinTime,
             checkoutTime,
-            dailyPrice,
+            dailyPrice: dailyPrice.toLocaleString(),
             lateCheckout,
-            secondHourPrice,
-            firstHourPrice,
+            secondHourPrice: secondHourPrice.toLocaleString(),
+            firstHourPrice: firstHourPrice.toLocaleString(),
             isAvailable
           };
         })
