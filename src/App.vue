@@ -7,9 +7,14 @@
 </template>
 
 <script>
+import { db } from "@/firebase.js";
+
 export default {
   name: "app",
-  components: {}
+  components: {},
+  created() {
+    this.$store.dispatch("getRoomsData", db.collection("rooms"));
+  }
 };
 </script>
 

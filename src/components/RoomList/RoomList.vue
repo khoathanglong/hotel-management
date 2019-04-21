@@ -18,8 +18,8 @@
           placeholder="Tìm kiếm theo số phòng"
           v-model.number="roomFiltered"
           maxlength="3"
+          prefix-icon="el-icon-search"
         >
-          <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </el-col>
     </el-row>
@@ -109,13 +109,17 @@ export default {
     }
   },
   methods: {
-    handleRowClick(row) {
-      this.$emit("openCheckinForm", row);
-      // open form dialog
+    handleRowClick(room) {
+      if (!room.isAvailable) {
+        this.$message({
+          message: "Phòng " + room.roomNo + " đang có khách ở",
+          type: "warning"
+        });
+        return;
+      }
+      this.$emit("openCheckinForm", room);
     },
-    // sortByAvailability(a, b) {
-    //   return a.isAvailable - b.isAvailable;
-    // },
+
     handleBooking() {}
   }
 };

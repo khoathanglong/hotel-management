@@ -11,8 +11,8 @@
 // @ is an alias to /src
 import RoomList from "@/components/RoomList/RoomList.vue";
 // import GuestForm from "@/components/GuestForm/GuestForm.vue";
-import { db } from "@/firebase.js";
-
+// import { db } from "@/firebase.js";
+import { mapState, mapActions } from "vuex";
 export default {
   components: {
     RoomList
@@ -20,11 +20,12 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
-      rooms: []
+      dialogVisible: false
+      // rooms: []
     };
   },
   computed: {
+    ...mapState(["rooms"]),
     filteredRoomList() {
       return (
         this.rooms &&
@@ -60,10 +61,10 @@ export default {
       this.$router.push(`/check-in/${row.roomNo}`);
     }
   },
-  firestore: {
-    rooms: db.collection("rooms")
-  },
-  mounted() {}
+  // firestore: {
+  //   rooms: db.collection("rooms")
+  // },
+  created() {}
 };
 </script>
 

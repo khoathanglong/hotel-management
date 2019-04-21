@@ -36,7 +36,6 @@
 import GeneralCheckinInfo from "@/components/CheckinForm/GeneralCheckinInfo.vue";
 import GuestsList from "@/components/CheckinForm/GuestsList.vue";
 import AddGuestForm from "@/components/CheckinForm/AddGuestForm.vue";
-
 export default {
   components: { GeneralCheckinInfo, GuestsList, AddGuestForm },
   data() {
@@ -46,36 +45,36 @@ export default {
       selectedRoomTypes: [],
       checkoutDateTime: null,
       totalGuests: 1,
-      availableRooms: [
-        {
-          id: 1,
-          label: "Superior",
-          children: [
-            {
-              id: 101,
-              label: 101
-            },
-            {
-              id: 102,
-              label: 102
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "Standard",
-          children: [
-            {
-              id: 201,
-              label: 201
-            },
-            {
-              id: 202,
-              label: 202
-            }
-          ]
-        }
-      ],
+      // availableRooms: [
+      //   {
+      //     id: 1,
+      //     label: "Superior",
+      //     children: [
+      //       {
+      //         id: 101,
+      //         label: 101
+      //       },
+      //       {
+      //         id: 102,
+      //         label: 102
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     id: 2,
+      //     label: "Standard",
+      //     children: [
+      //       {
+      //         id: 201,
+      //         label: 201
+      //       },
+      //       {
+      //         id: 202,
+      //         label: 202
+      //       }
+      //     ]
+      //   }
+      // ],
       guestsList: [
         {
           sequence: 0,
@@ -91,6 +90,39 @@ export default {
     };
   },
   methods: {
+    filterAvailableRooms(roomList) {
+      let roomTypeGroups = [];
+      let groupId = 1;
+      const availableRooms = roomList.filter(room => room.isAvailable);
+      availableRooms.forEach(room => {
+        if (roomTypeGroups.length == 0) {
+          roomTypeGroups.push({
+            id: groupId,
+            label: room.roomType,
+            children: [{ id: room.roomNo, label: room.roomNo }]
+          });
+          return;
+        } else {
+          const existingIndex = roomTypeGroups.findIndex(
+            el => el.label == room.roomType
+          );
+          if (existingIndex > -1) {
+            roomTypeGroups[existingIndex].children.push({
+              id: room.roomNo,
+              label: room.roomNo
+            });
+          } else {
+            groupId++;
+            roomTypeGroups.push({
+              id: groupId,
+              label: room.roomType,
+              children: [{ id: room.roomNo, label: room.roomNo }]
+            });
+          }
+        }
+      });
+      return roomTypeGroups;
+    },
     onSetCheckoutDateTime(value) {
       this.checkoutDateTime = value;
     },
@@ -143,6 +175,11 @@ export default {
       this.guestsList[this.selectedGuestIndex].placeIssued = placeIssued;
       this.guestsList[this.selectedGuestIndex].roomNo = roomNo;
       this.dialogVisible = false;
+    }
+  },
+  computed: {
+    availableRooms() {
+      return this.filterAvailableRooms(this.$store.state.rooms);
     }
   },
   mounted() {
