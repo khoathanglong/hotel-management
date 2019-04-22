@@ -10,6 +10,7 @@ import RoomList from "@/components/RoomList/RoomList.vue";
 // import GuestForm from "@/components/GuestForm/GuestForm.vue";
 // import { db } from "@/firebase.js";
 import { mapState, mapMutations } from "vuex";
+import moment from "moment";
 export default {
   components: {
     RoomList
@@ -41,9 +42,11 @@ export default {
           return {
             roomNo,
             roomType,
-            checkinTime,
-            checkoutTime,
-            dailyPrice: dailyPrice.toLocaleString(),
+            checkinTime:
+              checkinTime && moment(checkinTime).format("DD-MM-YYYY h:mm:ss"),
+            checkoutTime:
+              checkoutTime && moment(checkoutTime).format("DD-MM-YYYY h:mm:ss"),
+            dailyPrice,
             lateCheckout,
             secondHourPrice: secondHourPrice.toLocaleString(),
             firstHourPrice: firstHourPrice.toLocaleString(),
