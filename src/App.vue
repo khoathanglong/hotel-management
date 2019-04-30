@@ -1,7 +1,7 @@
 <template>
   <el-container id="app">
     <el-main>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </el-main>
   </el-container>
 </template>

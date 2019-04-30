@@ -32,6 +32,7 @@
           type="datetime"
           placeholder="Chọn ngày và giờ"
           style="width: 100%;"
+          :picker-options="pickerOptions"
         ></el-date-picker>
       </el-col>
     </el-row>
