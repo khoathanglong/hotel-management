@@ -1,11 +1,7 @@
 <template>
   <el-card shadow="never" class="receipt">
     <div slot="header" style="text-align: left;">
-<<<<<<< HEAD
-      <span style="font-weight: bold;">{{ title.toUpperCase() }}</span>
-=======
       <span style="font-weight: bold;">{{ title }}</span>
->>>>>>> updated checkin form
       <el-button
         style="float: right; padding: 3px 0"
         type="text"
@@ -24,15 +20,9 @@
           </p>
           <p>
             Ngày lập:
-<<<<<<< HEAD
-            <span class="bold-text">
-              {{ dateIssued && dateIssued.toLocaleString() }}
-            </span>
-=======
             <span class="bold-text">{{
               dateIssued && dateIssued.toLocaleString()
             }}</span>
->>>>>>> updated checkin form
           </p>
           <p>
             Người lập:
@@ -46,15 +36,9 @@
           </p>
           <p>
             Ngày checkin:
-<<<<<<< HEAD
-            <span class="bold-text">
-              {{ checkinDateTime && checkinDateTime.toLocaleString() }}
-            </span>
-=======
             <span class="bold-text">{{
               checkinDateTime && checkinDateTime.toLocaleString()
             }}</span>
->>>>>>> updated checkin form
           </p>
           <p>
             Xuất hóa đơn đỏ:
