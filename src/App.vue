@@ -36,4 +36,16 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
+@media screen and (max-width: 784px) {
+  .el-dialog {
+    width: 80% !important;
+  }
+}
+
+@media screen and (max-width: 488px) {
+  .el-dialog {
+    width: 100% !important;
+  }
+}
 </style>

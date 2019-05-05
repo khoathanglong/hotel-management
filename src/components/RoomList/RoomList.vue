@@ -1,6 +1,10 @@
 <template>
   <el-card class="roomTable">
-    <div slot="header" class="clearfix">Danh sách phòng</div>
+    <div slot="header" style="text-align: left;">
+      <span style="font-weight: bold; font-size: 24px;">
+        DANH SÁCH PHÒNG
+      </span>
+    </div>
     <el-row class="filterButtons">
       <el-col :md="4" :sm="24">
         <el-radio v-model="filteredRadio" label="all">Tất cả</el-radio>
@@ -128,13 +132,6 @@ export default {
     padding: 0 !important;
   }
   .el-card {
-    &__header {
-      .clearfix {
-        text-align: left;
-        font-weight: bold;
-        font-size: 2em;
-      }
-    }
     &__body {
       .el-button {
         float: left !important;

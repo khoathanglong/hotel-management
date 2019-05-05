@@ -6,7 +6,7 @@
     router
   >
     <!-- display submenu in xs screen -->
-    <el-submenu class="hidden-sm-and-up menu">
+    <el-submenu index="/" class="hidden-sm-and-up menu">
       <span slot="title">
         <i class="el-icon-menu"></i>
         Menu

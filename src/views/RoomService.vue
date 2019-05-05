@@ -4,13 +4,6 @@
       <span style="font-weight: bold; font-size: 24px;">
         QUẢN LÝ DỊCH VỤ PHÒNG
       </span>
-      <el-button
-        style="float: right; padding: 3px 0"
-        type="text"
-        circle
-        icon="el-icon-close"
-        @click="$router.go(-1)"
-      ></el-button>
     </div>
 
     <el-button type="primary" @click="addService" style="float: left">
@@ -78,14 +71,16 @@ export default {
       this.serviceList.splice(index, 1);
     },
     onSaveServiceInfo(serviceInfo) {
-      const { name, unit, unitPrice, isActive } = serviceInfo;
+      // this means new service should be added
       if (this.selectedServiceIndex === this.serviceList.length) {
         this.serviceList.push({});
       }
-      this.serviceList[this.selectedServiceIndex].name = name;
-      this.serviceList[this.selectedServiceIndex].unit = unit;
-      this.serviceList[this.selectedServiceIndex].unitPrice = unitPrice;
-      this.serviceList[this.selectedServiceIndex].isActive = isActive;
+
+      // assigning the old list to the new list to properly update view in UI
+      const newList = this.serviceList.map(each => each);
+      newList[this.selectedServiceIndex] = serviceInfo;
+      this.serviceList = [...newList];
+
       this.dialogVisible = false;
     }
   }

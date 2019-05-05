@@ -71,7 +71,8 @@ export default {
   },
   watch: {
     formData(value) {
-      this.$refs["service-form"].resetFields();
+      // reset when adding new service
+      if (!value.name) this.$refs["service-form"].resetFields();
       this.localFormData = { ...value };
     }
   }
