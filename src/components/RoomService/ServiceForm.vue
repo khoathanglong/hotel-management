@@ -54,7 +54,8 @@ export default {
         unitPrice: [
           {
             validator: validateUnitPrice
-          }
+          },
+          { required: true, message: "Vui lòng điền đơn giá." }
         ]
       }
     };

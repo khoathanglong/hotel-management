@@ -1,6 +1,7 @@
 import Vue from "vue";
 import lang from "element-ui/lib/locale/lang/vi";
 import locale from "element-ui/lib/locale";
+import "element-ui/lib/theme-chalk/display.css";
 
 import {
   Pagination,
