@@ -20,9 +20,9 @@
           </p>
           <p>
             Ngày lập:
-            <span class="bold-text">{{
-              dateIssued && dateIssued.toLocaleString()
-            }}</span>
+            <span class="bold-text">
+              {{ dateIssued && dateIssued.toLocaleString() }}
+            </span>
           </p>
           <p>
             Người lập:
@@ -102,7 +102,7 @@ export default {
       default: "John Henry"
     },
     checkinDateTime: {
-      type: Date,
+      type: String,
       default: () => new Date(Date.now() - 24 * 3600 * 1000) // 1 day before current date
     },
     redInvoice: {

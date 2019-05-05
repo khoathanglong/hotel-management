@@ -3,6 +3,7 @@ import Router from "vue-router";
 import ReceptionTable from "./views/ReceptionTable.vue";
 import CheckinForm from "./views/CheckinForm.vue";
 import CheckoutForm from "./views/CheckoutForm.vue";
+import RoomService from "./views/RoomService.vue";
 
 Vue.use(Router);
 
@@ -22,6 +23,11 @@ export default new Router({
       path: "/check-out",
       name: "Checkout Form",
       component: CheckoutForm
+    },
+    {
+      path: "/room-service",
+      name: "Room Service",
+      component: RoomService
     }
   ]
 });

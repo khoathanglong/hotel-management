@@ -8,6 +8,8 @@
         circle
         icon="el-icon-close"
         @click="$router.go(-1)"
+        v-loading="loading"
+        element-loading-text="Đang xử lý..."
       ></el-button>
     </div>
     <GeneralCheckinInfo
@@ -26,7 +28,7 @@
     />
     <div class="buttons">
       <el-button @click="$router.go(-1)">Thoát</el-button>
-      <el-button type="success">Check-in</el-button>
+      <el-button type="success" @click="checkin">Check-in</el-button>
     </div>
 
     <el-dialog
@@ -49,10 +51,12 @@ import GeneralCheckinInfo from "@/components/CheckinForm/GeneralCheckinInfo.vue"
 import GuestsList from "@/components/CheckinForm/GuestsList.vue";
 import AddGuestForm from "@/components/CheckinForm/AddGuestForm.vue";
 import { mapMutations } from "vuex";
+import { db } from "@/firebase";
 export default {
   components: { GeneralCheckinInfo, GuestsList, AddGuestForm },
   data() {
     return {
+      loading: false,
       dialogVisible: false,
       selectedRooms: [],
       selectedRoomTypes: [],
@@ -85,6 +89,7 @@ export default {
         //   placeIssued: ""
         // }
       ],
+      totalGuests: 1,
       selectedGuestIndex: null
     };
   },
@@ -169,6 +174,63 @@ export default {
       this.guestsList[this.selectedGuestIndex].placeIssued = placeIssued;
       this.guestsList[this.selectedGuestIndex].roomNo = roomNo;
       this.dialogVisible = false;
+    },
+    checkin() {
+      // TODO:
+      // check validation
+      // show Loader
+      // change room isAvailable status in db
+      // update guest list (guests)
+      // update checkinTime
+      // update checkoutTime if any
+      // add cumulativeInvoiceValue if possible
+      // remove loader
+      // show message if success or error
+      let validationMessage;
+      if (this.selectedRooms.length == 0)
+        validationMessage = "Cần chọn ít nhất 1 phòng để checkin";
+      else if (this.guestsList.length < this.totalGuests)
+        validationMessage = `Cần điền đủ thông tin của ${
+          this.totalGuests
+        } khách`;
+      if (validationMessage) {
+        this.$message({
+          message: validationMessage,
+          type: "warning"
+        });
+        return;
+      }
+      this.loading = true;
+      this.selectedRooms.forEach(room => {
+        const roomDoc = db.collection("rooms").doc(room.toString()); //select a room doc
+        const checkinTime = new Date();
+        roomDoc
+          .update({
+            guests: this.guestsList,
+            isAvailable: false,
+            checkinTime: checkinTime.toUTCString(),
+            checkoutTime:
+              this.checkoutDateTime && this.checkoutDateTime.toUTCString()
+          })
+          .then(() => {
+            this.$message({
+              message: `Check-in phòng ${room} thành công`,
+              type: "success"
+            });
+            this.$router.go(-1);
+          })
+          .catch(error => {
+            this.$message({
+              message:
+                "Có lỗi xảy ra, vui lòng kiểm tra lại kết nối và thử lại",
+              type: "error"
+            });
+            console.error(error);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      });
     }
   },
   computed: {
@@ -178,8 +240,10 @@ export default {
   },
   mounted() {
     const roomNo = this.$store.state.selectedRoom;
-    if (roomNo) this.selectedRooms.push(Number(roomNo));
-
+    if (roomNo) {
+      this.selectedRooms.push(Number(roomNo));
+      this.maxGuests = 2;
+    }
     for (let i = 0; i < this.availableRooms.length; i++) {
       const hasRoomNo = !!this.availableRooms[i].children.find(
         each => each.id == roomNo

@@ -45,35 +45,33 @@
           <span style="margin-left: 10px">{{ scope.row.roomNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        sortable
-        prop="roomType"
-        label="Loại Phòng"
-      ></el-table-column>
+      <el-table-column sortable prop="roomType" label="Loại"></el-table-column>
       <el-table-column
         sortable
         prop="checkinTime"
         label="Nhận phòng"
+        width="200px"
       ></el-table-column>
       <el-table-column
         sortable
         prop="checkoutTime"
         label="Trả phòng"
+        width="200px"
       ></el-table-column>
       <el-table-column
         sortable
         prop="dailyPrice"
-        label="Giá qua đêm"
+        label="Qua đêm"
       ></el-table-column>
       <el-table-column
         sortable
         prop="firstHourPrice"
-        label="Giá giờ đầu"
+        label="Giờ đầu"
       ></el-table-column>
       <el-table-column
         sortable
         prop="secondHourPrice"
-        label="Giá giờ kế"
+        label="Giờ kế"
       ></el-table-column>
     </el-table>
   </el-card>

@@ -32,6 +32,7 @@
           type="datetime"
           placeholder="Chọn ngày và giờ"
           style="width: 100%;"
+          :picker-options="pickerOptions"
         ></el-date-picker>
       </el-col>
     </el-row>
@@ -45,10 +46,6 @@ export default {
       type: Array,
       default: () => []
     },
-    selectedRoomTypes: {
-      type: Array,
-      default: () => [1]
-    },
     checkoutDateTime: {
       type: Date,
       default: null
@@ -57,6 +54,19 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  data() {
+    return {
+      pickerOptions: {
+        disabledDate: date => {
+          const disabledDate = new Date(date);
+          const currentDate = new Date();
+          return (
+            disabledDate.getTime() < currentDate.getTime() - 60 * 60 * 24 * 1000
+          );
+        }
+      }
+    };
   },
   computed: {
     time: {

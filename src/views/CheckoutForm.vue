@@ -31,24 +31,112 @@
 <script>
 import GuestsList from "@/components/CheckinForm/GuestsList.vue";
 import Receipt from "@/components/Payment/Receipt.vue";
-import { mapMutations } from "vuex";
-
+import { mapMutations, mapState } from "vuex";
+import moment from "moment";
 export default {
   components: { GuestsList, Receipt },
   data() {
     return {
-      guestsList: [],
+      // guestsList: [],
       receiptNo: 123,
-      dateIssued: new Date(Date.now()),
+      dateIssued: new Date(),
+      // dateIssued: moment(new Date()).format("DD-MM-YYYY h:mm:ss"),
       issuer: "Ngoc Nguyen",
-      customer: "Long Khoa",
-      checkinDateTime: new Date(Date.now() - 24 * 3600 * 1000 * 2),
       redInvoice: false,
-      receiptTable: []
+      receiptTable: {
+        items: [],
+        sum: {}
+      }
     };
   },
+  computed: {
+    ...mapState({
+      checkoutRoom: state =>
+        state.rooms.find(room => room.roomNo == state.selectedRoom)
+    }),
+    checkinDateTime() {
+      return moment(this.checkoutRoom.checkinTime).format("DD-MM-YYYY h:mm:ss");
+    },
+    guestsList() {
+      return this.checkoutRoom && this.checkoutRoom.guests;
+    },
+    customer() {
+      return this.guestsList && this.guestsList[0].fullName;
+    },
+    timeUsingHotel() {
+      // over  15 min => round up to 1 hour
+      // over 6 hours round up to 1 day
+
+      let timeUsingHotel =
+        new Date(this.dateIssued).getTime() -
+        new Date(this.checkoutRoom.checkinTime).getTime();
+      console.log(timeUsingHotel);
+      let numOfHours = 0;
+      let numOfDays = 0;
+      let numOfMins;
+      const oneMin = 60 * 1000;
+      const oneHour = 3600 * 1000;
+      const oneDay = 3600 * 24 * 1000;
+      while (timeUsingHotel > oneDay) {
+        numOfDays += 1;
+        timeUsingHotel -= oneDay;
+      }
+      while (timeUsingHotel > oneHour) {
+        numOfHours += 1;
+        timeUsingHotel -= oneHour;
+      }
+      numOfMins = timeUsingHotel / oneMin; // remaining time is in minutes
+      if (numOfMins > 15) {
+        numOfHours += 1;
+      }
+      if (numOfHours > 6) {
+        numOfDays += 1;
+        numOfHours = 0;
+      }
+      return {
+        days: numOfDays,
+        hours: numOfHours
+      };
+    }
+  },
   methods: {
-    ...mapMutations(["setSelectedRoom"])
+    ...mapMutations(["setSelectedRoom"]),
+    calculateRoomFee() {
+      let { days, hours } = this.timeUsingHotel;
+      const { firstHourPrice, secondHourPrice, dailyPrice } = this.checkoutRoom;
+      const dailyFee = days * dailyPrice;
+      const firstHourFee = firstHourPrice * hours;
+      const nextHoursFee = hours === 0 ? 0 : secondHourPrice * (hours - 1);
+      const total = dailyFee + firstHourFee + nextHoursFee;
+      this.receiptTable.items.push({
+        content: this.checkoutRoom.roomNo,
+        quantity: days,
+        unit: "Ngày",
+        unitPrice: dailyPrice,
+        subTotal: dailyFee
+      });
+      if (hours > 0) {
+        this.receiptTable.items.push({
+          content: this.checkoutRoom.roomNo,
+          quantity: hours,
+          unit: "Giờ (đầu)",
+          unitPrice: firstHourFee,
+          subTotal: firstHourFee
+        });
+      }
+      if (hours > 1) {
+        this.receiptTable.items.push({
+          content: this.checkoutRoom.roomNo,
+          quantity: hours,
+          unit: "Giờ (thứ 2)",
+          unitPrice: secondHourPrice,
+          subTotal: nextHoursFee
+        });
+      }
+    }
+  },
+  created() {
+    this.calculateRoomFee();
   },
   beforeDestroy() {
     this.setSelectedRoom(null);
