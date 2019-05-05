@@ -15,13 +15,14 @@ if (typeof firebase === "undefined")
 firebase.initializeApp(config);
 
 const db = firebase.firestore();
-const auth = firebase.auth();
-const currentUser = auth.currentUser;
+
+const auth = firebase.auth;
+// const provider = new firebase.auth.GoogleAuthProvider();
 
 // firebase collections
 const rooms = db.collection("rooms");
 const users = db.collection("users");
-export { db, rooms, auth, currentUser, users };
+export { db, rooms, auth, users };
 // // add ref Data
 
 // let rooms = [

@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { db } from "@/firebase";
 export default {
   props: {
     roomList: {
@@ -111,6 +112,9 @@ export default {
     },
 
     handleBooking() {}
+  },
+  created() {
+    this.$store.dispatch("getRoomsData", db.collection("rooms"));
   }
 };
 </script>

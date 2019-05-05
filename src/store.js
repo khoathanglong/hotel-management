@@ -7,11 +7,19 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     rooms: [],
-    selectedRoom: null
+    selectedRoom: null,
+    user: {
+      email: "",
+      role: ""
+    }
   },
   mutations: {
     setSelectedRoom(state, value) {
       state.selectedRoom = value;
+    },
+    setUserInfo(state, userInfo) {
+      state.user.email = userInfo.email;
+      state.user.role = userInfo.role;
     },
     ...vuexfireMutations
   },

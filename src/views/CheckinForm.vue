@@ -62,33 +62,7 @@ export default {
       selectedRoomTypes: [],
       checkoutDateTime: null,
       maxGuests: 0,
-      // availableRooms: [
-      //   {
-      //     id: 1,
-      //     label: "Superior",
-      //     children: [
-      //       {
-      //         id: 101,
-      //         label: 101
-      //       },
-      //       {
-      //         id: 102,
-      //         label: 102
-      //       }
-      //     ]
-      //   },
-      // ],
-      guestsList: [
-        // {
-        //   sequence: 0,
-        //   adult: true,
-        //   fullName: "John",
-        //   roomNo: "101",
-        //   idNo: "1234",
-        //   dateIssued: "",
-        //   placeIssued: ""
-        // }
-      ],
+      guestsList: [],
       totalGuests: 1,
       selectedGuestIndex: null
     };

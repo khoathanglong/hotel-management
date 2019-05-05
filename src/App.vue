@@ -10,19 +10,25 @@
 </template>
 
 <script>
-import { db } from "@/firebase.js";
 import TheNavBar from "@/components/TheNavBar";
 
 export default {
   name: "app",
-  components: { TheNavBar },
-  created() {
-    this.$store.dispatch("getRoomsData", db.collection("rooms"));
-  }
+  components: { TheNavBar }
 };
 </script>
 
 <style lang="scss">
+@media (max-width: 768px) {
+  body {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    .el-main {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

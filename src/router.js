@@ -5,6 +5,8 @@ import CheckinForm from "./views/CheckinForm.vue";
 import CheckoutForm from "./views/CheckoutForm.vue";
 import RoomService from "./views/RoomService.vue";
 
+import SignIn from "./views/SignIn.vue";
+import SignUp from "./views/SignUp.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -13,6 +15,16 @@ export default new Router({
       path: "/",
       name: "home",
       component: ReceptionTable
+    },
+    {
+      path: "/sign-in",
+      name: "Sign In",
+      component: SignIn
+    },
+    {
+      path: "/sign-up",
+      name: "Sign Up",
+      component: SignUp
     },
     {
       path: "/check-in",
