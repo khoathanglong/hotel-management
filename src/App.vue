@@ -1,6 +1,6 @@
 <template>
   <el-container id="app">
-    <el-header>
+    <el-header v-show="!$route.path.includes('sign')">
       <the-nav-bar />
     </el-header>
     <el-main>

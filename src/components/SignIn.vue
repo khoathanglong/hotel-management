@@ -1,5 +1,5 @@
 <template>
-  <el-card v-loading="loading">
+  <el-card v-loading="loading" class="boxCard">
     <div slot="header">
       <h2 style="font-weight: bold; margin: 0">Đăng nhập</h2>
       <span>Tới hệ thống quản lý</span>
@@ -16,7 +16,11 @@
       <el-form-item label="Mật khẩu" prop="password">
         <el-input type="password" v-model="form.password"></el-input>
       </el-form-item>
-
+      <el-form-item style="text-align: right;">
+        <router-link to="/sign-up" style="color: blue"
+          >Đăng ký tài khoản mới</router-link
+        >
+      </el-form-item>
       <el-form-item style="text-align: left;">
         <el-button type="primary" @click="login">Đăng nhập</el-button>
       </el-form-item>
@@ -82,7 +86,7 @@ export default {
                 .then(doc => {
                   // set user info for later use
                   this.$store.commit("setUserInfo", doc.data());
-                  this.$router.push("/sign-up");
+                  this.$router.replace("/");
                 });
             })
             .catch(err => {
@@ -104,3 +108,16 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.boxCard {
+  width: 50%;
+  margin: 10vh auto;
+}
+@media (max-width: 768px) {
+  .boxCard {
+    width: 96%;
+    margin: 0 auto;
+  }
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <el-card v-loading="loading">
+  <el-card v-loading="loading" class="signUp">
     <div slot="header">
       <h2 style="font-weight: bold; margin: 0">Đăng ký tài khoản</h2>
       <span>Nhân viên mới</span>
@@ -92,7 +92,7 @@ export default {
                 type: "success",
                 message: "Tài khoản tạo thành công"
               });
-              this.$router.push("/");
+              this.$router.replace("/");
             })
             .catch(err => {
               console.log(err);
@@ -115,3 +115,16 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.signUp {
+  width: 50%;
+  margin: 10vh auto;
+}
+@media (max-width: 768px) {
+  .signUp {
+    width: 96%;
+    margin: 0 auto;
+  }
+}
+</style>

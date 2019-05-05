@@ -43,19 +43,35 @@
         <small>{{ userRole }}</small>
       </span>
       <el-menu-item index="/account">Tài khoản cá nhân</el-menu-item>
-      <el-menu-item index="/account">Đăng xuất</el-menu-item>
+      <el-menu-item :index="$route.fullPath" @click="logout"
+        >Đăng xuất</el-menu-item
+      >
     </el-submenu>
   </el-menu>
 </template>
 
 <script>
+import { auth } from "@/firebase";
 export default {
   computed: {
     userName() {
-      return "John Doe";
+      return this.$store.state.user.email;
     },
     userRole() {
-      return "Admin";
+      return this.$store.state.user.role;
+    }
+  },
+  methods: {
+    logout() {
+      auth()
+        .signOut()
+        .then(() => {
+          this.$store.commit("setUserInfo", { email: "", role: "" });
+          this.$router.replace("/sign-in");
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
