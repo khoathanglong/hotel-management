@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { auth, users } from "@/firebase";
+import { auth } from "@/firebase";
 
 export default {
   data() {
@@ -77,17 +77,8 @@ export default {
               console.log(result);
               return auth().signInWithEmailAndPassword(email, password);
             })
-            .then(result => {
-              console.log(result);
-              const { uid } = result.user;
-              users
-                .doc(uid)
-                .get()
-                .then(doc => {
-                  // set user info for later use
-                  this.$store.commit("setUserInfo", doc.data());
-                  this.$router.replace("/");
-                });
+            .then(() => {
+              this.$router.replace("/");
             })
             .catch(err => {
               console.log(err);

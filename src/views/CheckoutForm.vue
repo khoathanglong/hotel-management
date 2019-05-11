@@ -39,7 +39,7 @@ export default {
     return {
       // guestsList: [],
       receiptNo: 123,
-      dateIssued: new Date(),
+      dateIssued: Date.now(),
       // dateIssued: moment(new Date()).format("DD-MM-YYYY h:mm:ss"),
       issuer: "Ngoc Nguyen",
       redInvoice: false,
@@ -68,9 +68,7 @@ export default {
       // over 6 hours round up to 1 day
 
       let timeUsingHotel =
-        new Date(this.dateIssued).getTime() -
-        new Date(this.checkoutRoom.checkinTime).getTime();
-      console.log(timeUsingHotel);
+        this.dateIssued - new Date(this.checkoutRoom.checkinTime).getTime();
       let numOfHours = 0;
       let numOfDays = 0;
       let numOfMins;
