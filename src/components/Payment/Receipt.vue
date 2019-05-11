@@ -37,7 +37,7 @@
           <p>
             Ngày checkin:
             <span class="bold-text">{{
-              checkinDateTime && checkinDateTime.toLocaleString()
+              checkinDateTime && localCheckinDateTime(checkinDateTime)
             }}</span>
           </p>
           <p>
@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   props: {
     title: {
@@ -91,7 +93,7 @@ export default {
     },
     dateIssued: {
       type: Date,
-      default: () => new Date()
+      default: () => Date.now()
     },
     issuer: {
       type: String,
@@ -103,7 +105,7 @@ export default {
     },
     checkinDateTime: {
       type: String,
-      default: () => new Date(Date.now() - 24 * 3600 * 1000) // 1 day before current date
+      default: () => Date.now() - 24 * 3600 * 1000 // 1 day before current date
     },
     redInvoice: {
       type: Boolean,
@@ -138,6 +140,9 @@ export default {
       set() {
         this.$emit("ToggleRedInvoice");
       }
+    },
+    localCheckinDateTime() {
+      return dateTime => moment(dateTime).format("DD-MM-YYYY h:mm:ss");
     }
   },
   methods: {

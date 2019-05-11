@@ -32,7 +32,7 @@
 import GuestsList from "@/components/CheckinForm/GuestsList.vue";
 import Receipt from "@/components/Payment/Receipt.vue";
 import { mapMutations, mapState } from "vuex";
-import moment from "moment";
+
 export default {
   components: { GuestsList, Receipt },
   data() {
@@ -55,7 +55,7 @@ export default {
         state.rooms.find(room => room.roomNo == state.selectedRoom)
     }),
     checkinDateTime() {
-      return moment(this.checkoutRoom.checkinTime).format("DD-MM-YYYY h:mm:ss");
+      return this.checkoutRoom.checkinTime;
     },
     guestsList() {
       return this.checkoutRoom && this.checkoutRoom.guests;
