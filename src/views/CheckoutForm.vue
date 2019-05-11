@@ -32,14 +32,14 @@
 import GuestsList from "@/components/CheckinForm/GuestsList.vue";
 import Receipt from "@/components/Payment/Receipt.vue";
 import { mapMutations, mapState } from "vuex";
-import moment from "moment";
+
 export default {
   components: { GuestsList, Receipt },
   data() {
     return {
       // guestsList: [],
       receiptNo: 123,
-      dateIssued: new Date(),
+      dateIssued: Date.now(),
       // dateIssued: moment(new Date()).format("DD-MM-YYYY h:mm:ss"),
       issuer: "Ngoc Nguyen",
       redInvoice: false,
@@ -55,7 +55,7 @@ export default {
         state.rooms.find(room => room.roomNo == state.selectedRoom)
     }),
     checkinDateTime() {
-      return moment(this.checkoutRoom.checkinTime).format("DD-MM-YYYY h:mm:ss");
+      return this.checkoutRoom.checkinTime;
     },
     guestsList() {
       return this.checkoutRoom && this.checkoutRoom.guests;
