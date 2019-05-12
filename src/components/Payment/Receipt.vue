@@ -41,7 +41,7 @@
             }}</span>
           </p>
           <p>
-            Ngày checkin:
+            Nhân viên checkin:
             <span class="bold-text">{{ checkinBy }}</span>
           </p>
         </el-col>
