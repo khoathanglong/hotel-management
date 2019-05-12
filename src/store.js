@@ -1,12 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { firestoreAction, vuexfireMutations } from "vuexfire";
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     rooms: [],
+    services: [],
     selectedRoom: null,
     user: {
       email: "",
@@ -29,6 +29,9 @@ export default new Vuex.Store({
       bindFirestoreRef("rooms", ref);
       // you can unbind any ref easily
       // unbindFirestoreRef("user");
+    }),
+    getServices: firestoreAction(({ bindFirestoreRef }, ref) => {
+      bindFirestoreRef("services", ref);
     })
   }
 });

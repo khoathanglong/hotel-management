@@ -18,6 +18,7 @@
       label="Sửa/Xóa"
       align="center"
       class-name="icons"
+      v-if="userIsAdmin"
     >
       <template slot-scope="scope">
         <i class="el-icon-edit" @click="$emit('EditService', scope.$index)"></i>
@@ -36,6 +37,11 @@ export default {
     data: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    userIsAdmin() {
+      return this.$store.state.user.role === "admin";
     }
   }
 };

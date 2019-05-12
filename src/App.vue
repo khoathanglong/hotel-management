@@ -11,10 +11,13 @@
 
 <script>
 import TheNavBar from "@/components/TheNavBar";
-
+import { db } from "@/firebase";
 export default {
   name: "app",
-  components: { TheNavBar }
+  components: { TheNavBar },
+  mounted() {
+    this.$store.dispatch("getServices", db.collection("services"));
+  }
 };
 </script>
 

@@ -66,7 +66,7 @@ export default {
     timeUsingHotel() {
       // over  15 min => round up to 1 hour
       // over 6 hours round up to 1 day
-
+      let stayOver;
       let timeUsingHotel =
         this.dateIssued - new Date(this.checkoutRoom.checkinTime).getTime();
       let numOfHours = 0;
@@ -87,7 +87,7 @@ export default {
       if (numOfMins > 15) {
         numOfHours += 1;
       }
-      if (numOfHours > 6) {
+      if (numOfHours > 12) {
         numOfDays += 1;
         numOfHours = 0;
       }

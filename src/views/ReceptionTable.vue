@@ -64,11 +64,7 @@ export default {
         this.$router.push("/check-in");
       } else this.$router.push("/check-out");
     }
-  },
-  // firestore: {
-  //   rooms: db.collection("rooms")
-  // },
-  created() {}
+  }
 };
 </script>
 

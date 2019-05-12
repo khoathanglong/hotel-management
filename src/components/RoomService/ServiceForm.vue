@@ -47,7 +47,12 @@ export default {
   },
   data() {
     return {
-      localFormData: { ...this.formData },
+      localFormData: {
+        name: "",
+        unit: "",
+        unitPrice: 0,
+        isActive: true
+      },
       rules: {
         name: [{ required: true, message: "Vui lòng điền tên dịch vụ." }],
         unit: [{ required: true, message: "Vui lòng điền đơn vị." }],
@@ -64,16 +69,11 @@ export default {
     triggerSaveForm() {
       const self = this;
       this.$refs["service-form"].validate(valid => {
-        if (valid) self.$emit("SaveServiceInfo", this.localFormData);
-        else return false;
+        if (valid) {
+          self.$emit("SaveServiceInfo", this.localFormData);
+          this.$refs["service-form"].resetFields();
+        } else return false;
       });
-    }
-  },
-  watch: {
-    formData(value) {
-      // reset when adding new service
-      if (!value.name) this.$refs["service-form"].resetFields();
-      this.localFormData = { ...value };
     }
   }
 };
