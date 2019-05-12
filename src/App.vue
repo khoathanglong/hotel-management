@@ -15,7 +15,7 @@ import { db } from "@/firebase";
 export default {
   name: "app",
   components: { TheNavBar },
-  mounted() {
+  created() {
     this.$store.dispatch("getServices", db.collection("services"));
   }
 };

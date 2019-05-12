@@ -11,13 +11,17 @@
     </el-button>
 
     <service-table
-      :data="serviceList"
+      :services="serviceList"
       @EditService="onEditService"
       @DeleteService="onDeleteService"
     />
 
     <el-dialog :visible.sync="dialogVisible" title="Thông tin dịch vụ">
-      <service-form @SaveServiceInfo="onSaveServiceInfo" />
+      <service-form
+        @SaveServiceInfo="onSaveServiceInfo"
+        v-if="dialogVisible"
+        :selectedServiceIndex="this.selectedServiceIndex"
+      />
     </el-dialog>
   </el-card>
 </template>
@@ -42,28 +46,17 @@ export default {
     },
     onEditService(index) {
       this.selectedServiceIndex = index;
-      this.formData = { ...this.serviceList[index] };
       this.dialogVisible = true;
     },
     onDeleteService(index) {
-      this.serviceList.splice(index, 1);
+      const deletedItemId = this.serviceList[index].itemId;
+      db.collection("services")
+        .doc(deletedItemId)
+        .delete();
     },
     onSaveServiceInfo(serviceInfo) {
-      // servicesInfo is an Object
       const services = db.collection("services");
-      services.doc(serviceInfo.name).set(serviceInfo);
-      // this means new service should be added
-      // update this info into firebase then it will automatically sync with other client
-
-      // if (this.selectedServiceIndex === this.serviceList.length) {
-      //   this.serviceList.push({});
-      // }
-
-      // // assigning the old list to the new list to properly update view in UI
-      // const newList = this.serviceList.map(each => each);
-      // newList[this.selectedServiceIndex] = serviceInfo;
-      // this.serviceList = [...newList];
-
+      services.doc(serviceInfo.itemId).set(serviceInfo);
       this.dialogVisible = false;
     }
   }

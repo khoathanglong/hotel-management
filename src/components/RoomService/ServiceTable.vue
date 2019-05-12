@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="data">
+  <el-table :data="services">
     <el-table-column label="#" align="center">
       <template slot-scope="scope">
         {{ scope.$index + 1 }}
@@ -10,7 +10,8 @@
     <el-table-column prop="unitPrice" label="Đơn giá" align="right" />
     <el-table-column label="Đang áp dụng" align="center">
       <template slot-scope="scope">
-        <el-switch :value="data[scope.$index].isActive" disabled> </el-switch>
+        <el-switch :value="services[scope.$index].isActive" disabled>
+        </el-switch>
       </template>
     </el-table-column>
     <el-table-column
@@ -34,7 +35,7 @@
 <script>
 export default {
   props: {
-    data: {
+    services: {
       type: Array,
       default: () => []
     }

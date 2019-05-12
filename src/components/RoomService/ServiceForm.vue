@@ -40,19 +40,25 @@ const validateUnitPrice = (rule, value, callback) => {
 
 export default {
   props: {
-    formData: {
-      type: Object,
-      default: () => {}
+    selectedServiceIndex: {
+      type: Number,
+      default: Infinity
     }
   },
   data() {
     return {
-      localFormData: {
-        name: "",
-        unit: "",
-        unitPrice: 0,
-        isActive: true
-      },
+      localFormData: this.$store.state.services[this.selectedServiceIndex]
+        ? {
+            ...this.$store.state.services[this.selectedServiceIndex]
+          }
+        : {
+            name: "",
+            unit: "",
+            unitPrice: "",
+            isActive: true,
+            updatedAt: Date.now(),
+            itemId: this.$store.state.user.email + Date.now()
+          },
       rules: {
         name: [{ required: true, message: "Vui lòng điền tên dịch vụ." }],
         unit: [{ required: true, message: "Vui lòng điền đơn vị." }],
@@ -71,7 +77,7 @@ export default {
       this.$refs["service-form"].validate(valid => {
         if (valid) {
           self.$emit("SaveServiceInfo", this.localFormData);
-          this.$refs["service-form"].resetFields();
+          // this.$refs["service-form"].resetFields();
         } else return false;
       });
     }
