@@ -1,25 +1,35 @@
 <template>
   <div class="receptionTable">
     <RoomList @OpenForm="onOpenForm" :roomList="filteredRoomList" />
+    <Dialog
+      :show="dialogVisible"
+      @CloseDialog="onCloseDialog"
+      @TriggerAddService="onTriggerAddService"
+    />
+    <AddServiceDialog
+      :show="showServiceDialog"
+      @CloseAddServiceDialog="onCloseAddServiceDialog"
+    />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import RoomList from "@/components/RoomList/RoomList.vue";
-// import GuestForm from "@/components/GuestForm/GuestForm.vue";
-// import { db } from "@/firebase.js";
+import RoomList from "@/components/ReceptionTable/RoomList.vue";
+import Dialog from "@/components/ReceptionTable/Dialog.vue";
+import AddServiceDialog from "@/components/ReceptionTable/AddServiceDialog.vue";
 import { mapState, mapMutations } from "vuex";
 import moment from "moment";
 export default {
   components: {
-    RoomList
-    // GuestForm
+    RoomList,
+    Dialog,
+    AddServiceDialog
   },
   data() {
     return {
-      dialogVisible: false
-      // rooms: []
+      dialogVisible: false,
+      showServiceDialog: false
     };
   },
   computed: {
@@ -62,7 +72,18 @@ export default {
       this.setSelectedRoom(row.roomNo);
       if (row.isAvailable) {
         this.$router.push("/check-in");
-      } else this.$router.push("/check-out");
+      } else this.dialogVisible = true;
+    },
+    onCloseDialog() {
+      this.dialogVisible = false;
+    },
+    onTriggerAddService() {
+      this.dialogVisible = false;
+      this.showServiceDialog = true;
+    },
+    onCloseAddServiceDialog() {
+      this.showServiceDialog = false;
+      this.setSelectedRoom(null);
     }
   }
 };
