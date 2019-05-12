@@ -4,6 +4,7 @@ import ReceptionTable from "./views/ReceptionTable.vue";
 import CheckinForm from "./views/CheckinForm.vue";
 import CheckoutForm from "./views/CheckoutForm.vue";
 import RoomService from "./views/RoomService.vue";
+import Revenue from "./views/Revenue.vue";
 
 import SignIn from "./views/SignIn.vue";
 import SignUp from "./views/SignUp.vue";
@@ -40,6 +41,11 @@ export default new Router({
       path: "/room-service",
       name: "Room Service",
       component: RoomService
+    },
+    {
+      path: "/revenue",
+      name: "Revenue",
+      component: Revenue
     }
   ]
 });
