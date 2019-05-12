@@ -123,9 +123,9 @@ export default {
         sequence: this.guestsList.length,
         adult: true,
         fullName: "",
-        roomNo: "",
+        roomNo: null,
         idNo: "",
-        dateIssued: "",
+        dateIssued: null,
         placeIssued: ""
       });
       this.selectedGuestIndex = this.guestsList.length - 1;
@@ -177,14 +177,14 @@ export default {
       this.loading = true;
       this.selectedRooms.forEach(room => {
         const roomDoc = db.collection("rooms").doc(room.toString()); //select a room doc
-        const checkinTime = new Date();
+        const checkinTime = Date.now();
         roomDoc
           .update({
             guests: this.guestsList,
             isAvailable: false,
-            checkinTime: checkinTime.toUTCString(),
-            checkoutTime:
-              this.checkoutDateTime && this.checkoutDateTime.toUTCString()
+            checkinTime: checkinTime,
+            checkoutTime: this.checkoutDateTime,
+            checkinBy: this.$store.state.user.email
           })
           .then(() => {
             this.$message({

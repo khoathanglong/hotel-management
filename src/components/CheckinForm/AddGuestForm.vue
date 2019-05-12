@@ -41,6 +41,7 @@
         format="dd/MM/yyyy"
         :picker-options="datePickerOptions"
         :disabled="!formData.adult"
+        value-format="timestamp"
       ></el-date-picker>
     </el-form-item>
 

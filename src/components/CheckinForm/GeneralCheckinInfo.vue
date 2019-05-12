@@ -47,7 +47,7 @@ export default {
       default: () => []
     },
     checkoutDateTime: {
-      type: Date,
+      type: Number,
       default: null
     },
     availableRooms: {
@@ -74,7 +74,7 @@ export default {
         return this.checkoutDateTime;
       },
       set(value) {
-        this.$emit("SetCheckoutDateTime", value);
+        this.$emit("SetCheckoutDateTime", value.getTime());
       }
     },
     localSelectedRooms: {

@@ -25,7 +25,7 @@ const users = db.collection("users");
 export { db, rooms, auth, users };
 // // add ref Data
 
-// let rooms = [
+// let roomss = [
 //   101,
 //   102,
 //   103,
@@ -53,7 +53,7 @@ export { db, rooms, auth, users };
 //   505
 // ];
 
-// rooms.forEach(room => {
+// roomss.forEach(room => {
 //   const doc = room.toString();
 //   let roomType;
 //   let dailyPrice;
@@ -100,6 +100,8 @@ export { db, rooms, auth, users };
 //       isAvailable: true,
 //       roomType,
 //       lateCheckout,
-//       cumulativeInvoiceValue: 0
+//       cumulativeInvoiceValue: 0,
+//       checkinBy: "",
+//       checkoutBy: ""
 //     });
 // });

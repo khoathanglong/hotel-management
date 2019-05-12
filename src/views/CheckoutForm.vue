@@ -17,6 +17,7 @@
       :issuer="issuer"
       :customer="customer"
       :checkin-date-time="checkinDateTime"
+      :checkinBy="checkoutRoom.checkinBy"
       :red-invoice="redInvoice"
       :table-data="receiptTable"
       @ToggleRedInvoice="redInvoice = !redInvoice"
@@ -40,8 +41,7 @@ export default {
       // guestsList: [],
       receiptNo: 123,
       dateIssued: Date.now(),
-      // dateIssued: moment(new Date()).format("DD-MM-YYYY h:mm:ss"),
-      issuer: "Ngoc Nguyen",
+      issuer: this.$store.state.user.email,
       redInvoice: false,
       receiptTable: {
         items: [],

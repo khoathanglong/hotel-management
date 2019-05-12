@@ -21,7 +21,7 @@
           <p>
             Ngày lập:
             <span class="bold-text">
-              {{ dateIssued && dateIssued.toLocaleString() }}
+              {{ dateIssued && localCheckinDateTime(dateIssued) }}
             </span>
           </p>
           <p>
@@ -41,8 +41,8 @@
             }}</span>
           </p>
           <p>
-            Xuất hóa đơn đỏ:
-            <el-checkbox v-model="localRedInvoice" style="margin-left: 5px;" />
+            Ngày checkin:
+            <span class="bold-text">{{ checkinBy }}</span>
           </p>
         </el-col>
         <!--  -->
@@ -92,19 +92,23 @@ export default {
       default: 123
     },
     dateIssued: {
-      type: Date,
+      type: Number,
       default: () => Date.now()
     },
     issuer: {
       type: String,
       default: "Long Khoa"
     },
+    checkinBy: {
+      type: String,
+      default: "admin"
+    },
     customer: {
       type: String,
       default: "John Henry"
     },
     checkinDateTime: {
-      type: String,
+      type: Number,
       default: () => Date.now() - 24 * 3600 * 1000 // 1 day before current date
     },
     redInvoice: {
