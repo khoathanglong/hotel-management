@@ -15,9 +15,9 @@
           <el-select v-model="form.name" placeholder="Chọn dịch vụ">
             <el-option
               v-for="service in serviceList"
-              :key="service.label"
-              :label="service.label"
-              :value="service.value"
+              :key="service.itemId"
+              :value="service.name"
+              :name="service.name"
             ></el-option>
           </el-select>
         </el-col>
@@ -26,7 +26,7 @@
           <label class="input-label">{{ quantityLabel }}</label>
         </el-col>
         <el-col :md="9" :sm="8" :xs="16">
-          <el-input v-model="form.quantity" type="number"></el-input>
+          <el-input v-model.number="form.quantity" type="number"></el-input>
         </el-col>
       </el-row>
 
@@ -52,7 +52,7 @@
       >
     </div>
 
-    <el-table :data="tableData">
+    <el-table :data="selectedRoomData">
       <el-table-column prop="name" label="Tên dịch vụ" />
       <el-table-column prop="quantity" label="Số lượng">
         <template slot-scope="scope">
@@ -84,7 +84,7 @@
 
 <script>
 import { mapState } from "vuex";
-
+import { rooms } from "@/firebase";
 export default {
   props: {
     show: Boolean
@@ -95,23 +95,7 @@ export default {
         name: null,
         quantity: null
       },
-      serviceList: [
-        // {
-        //   label: "Service name",
-        //   value: "service1",
-        //   unit: "kg",
-        //   unitPrice: 10000
-        // }
-      ],
-      tableData: [
-        // {
-        //   name: "mi bo",
-        //   quantity: 1,
-        //   unit: "cai",
-        //   unitPrice: 10000,
-        //   subTotal: 10000
-        // }
-      ]
+      serviceList: this.$store.state.services
     };
   },
   computed: {
@@ -122,26 +106,29 @@ export default {
     quantityLabel() {
       return this.form.name
         ? `Số lượng (${
-            this.serviceList.find(each => each.value === this.form.name).unit
+            this.serviceList.find(each => each.name === this.form.name).unit
           })`
         : "Số lượng";
     },
     selectedUnitPrice() {
       return this.form.name
-        ? this.serviceList.find(each => each.value === this.form.name).unitPrice
+        ? this.serviceList.find(each => each.name === this.form.name).unitPrice
         : 0;
+    },
+    selectedRoomData() {
+      const selectedRoomData = this.$store.state.rooms.find(
+        room => room.roomNo == this.selectedRoom
+      );
+      return selectedRoomData ? selectedRoomData.extraServices : [];
     }
   },
   methods: {
-    resetLocalData() {
-      this.form = {
-        name: null,
-        quantity: null
-      };
-      this.tableData = [];
-      this.serviceList = [];
-    },
     addService() {
+      const extraServices = this.selectedRoomData;
+      extraServices.push({ ...this.form, updatedAt: Date.now() });
+      rooms.doc(this.selectedRoom.toString()).update({
+        extraServices: extraServices
+      });
       this.form = {
         name: null,
         quantity: null
@@ -152,7 +139,6 @@ export default {
     },
     closeDialog() {
       this.$emit("CloseAddServiceDialog");
-      this.resetLocalData();
     }
   }
 };

@@ -2,7 +2,7 @@
   <el-dialog :visible="show" @close="$emit('CloseDialog')" :title="title">
     <div style="margin-bottom: 10px;">
       <el-button @click="$emit('TriggerAddService')">Thêm dịch vụ</el-button>
-      <el-button type="primary" @click="$router.push('/checkout')"
+      <el-button type="primary" @click="$router.push('/check-out')"
         >Checkout</el-button
       >
     </div>

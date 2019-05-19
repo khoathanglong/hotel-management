@@ -9,6 +9,7 @@
     <AddServiceDialog
       :show="showServiceDialog"
       @CloseAddServiceDialog="onCloseAddServiceDialog"
+      v-if="showServiceDialog"
     />
   </div>
 </template>
