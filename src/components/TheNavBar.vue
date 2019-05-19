@@ -1,5 +1,5 @@
 <template>
-  <el-menu default-active="1" id="nav-bar" mode="horizontal">
+  <el-menu :default-active="activeMenu" id="nav-bar" mode="horizontal">
     <!-- display submenu in xs screen -->
     <el-submenu index="1" class="hidden-sm-and-up menu">
       <span slot="title">
@@ -58,6 +58,21 @@ export default {
     },
     userRole() {
       return this.$store.state.user.role;
+    },
+    activeMenu() {
+      const route = this.$route.fullPath;
+      switch (route) {
+        case "/":
+          return "1";
+        case "/room-service":
+          return "2";
+        case "/revenue":
+          return "3";
+        case "/account":
+          return "5";
+        default:
+          return "1";
+      }
     }
   },
   methods: {
