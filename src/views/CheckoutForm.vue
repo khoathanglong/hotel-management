@@ -45,7 +45,7 @@ export default {
       redInvoice: false,
       receiptTable: {
         items: [],
-        sum: {}
+        sum: 0
       }
     };
   },
@@ -111,7 +111,7 @@ export default {
         quantity: days,
         unit: "Ngày",
         unitPrice: dailyPrice,
-        subTotal: dailyFee
+        subtotal: dailyFee
       });
       if (hours > 0) {
         this.receiptTable.items.push({
@@ -119,7 +119,7 @@ export default {
           quantity: hours,
           unit: "Giờ (đầu)",
           unitPrice: firstHourFee,
-          subTotal: firstHourFee
+          subtotal: firstHourFee
         });
       }
       if (hours > 1) {
@@ -128,12 +128,21 @@ export default {
           quantity: hours,
           unit: "Giờ (thứ 2)",
           unitPrice: secondHourPrice,
-          subTotal: nextHoursFee
+          subtotal: nextHoursFee
         });
       }
+      this.receiptTable.items.push(
+        ...this.checkoutRoom.extraServices.map(each => ({
+          ...each,
+          content: each.name
+        }))
+      );
+      this.receiptTable.items.forEach(el => {
+        this.receiptTable.sum += el.subtotal;
+      });
     }
   },
-  created() {
+  mounted() {
     this.calculateRoomFee();
   },
   beforeDestroy() {

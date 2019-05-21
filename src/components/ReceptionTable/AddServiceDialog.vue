@@ -56,17 +56,18 @@
       <el-table-column prop="name" label="Tên dịch vụ" />
       <el-table-column prop="quantity" label="Số lượng">
         <template slot-scope="scope">
-          {{ scope.row.quantity.toLocaleString() }} {{ scope.row.unit }}
+          {{ scope.row.quantity && scope.row.quantity.toLocaleString() }}
+          {{ scope.row.unit }}
         </template>
       </el-table-column>
       <el-table-column prop="unitPrice" label="Đơn giá" align="right">
         <template slot-scope="scope">
-          {{ scope.row.unitPrice.toLocaleString() }}
+          {{ scope.row.unitPrice && scope.row.unitPrice.toLocaleString() }}
         </template>
       </el-table-column>
-      <el-table-column prop="subTotal" label="Thành tiền" align="right">
+      <el-table-column prop="subtotal" label="Thành tiền" align="right">
         <template slot-scope="scope">
-          {{ scope.row.subTotal.toLocaleString() }}
+          {{ scope.row.subtotal && scope.row.subtotal.toLocaleString() }}
         </template>
       </el-table-column>
       <el-table-column label="Xóa" align="center">
@@ -125,7 +126,12 @@ export default {
   methods: {
     addService() {
       const extraServices = this.selectedRoomData;
-      extraServices.push({ ...this.form, updatedAt: Date.now() });
+      extraServices.push({
+        ...this.form,
+        unitPrice: this.selectedUnitPrice,
+        subtotal: this.selectedUnitPrice * this.form.quantity,
+        updatedAt: Date.now()
+      });
       rooms.doc(this.selectedRoom.toString()).update({
         extraServices: extraServices
       });
@@ -136,6 +142,14 @@ export default {
     },
     deleteService(item) {
       console.log(item);
+      const deletedIndex = this.selectedRoomData.findIndex(
+        el => el.updatedAt === item.updatedAt
+      );
+      this.selectedRoomData.splice(deletedIndex, 1);
+      console.log(deletedIndex);
+      rooms.doc(this.selectedRoom.toString()).update({
+        extraServices: this.selectedRoomData
+      });
     },
     closeDialog() {
       this.$emit("CloseAddServiceDialog");

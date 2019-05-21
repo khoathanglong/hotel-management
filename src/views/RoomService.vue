@@ -56,6 +56,7 @@ export default {
     },
     onSaveServiceInfo(serviceInfo) {
       const services = db.collection("services");
+      console.log(serviceInfo);
       services.doc(serviceInfo.itemId).set(serviceInfo);
       this.dialogVisible = false;
     }

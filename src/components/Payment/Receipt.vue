@@ -59,17 +59,21 @@
         <el-table-column prop="content" label="Nội dung"></el-table-column>
         <el-table-column prop="quantity" label="Số lượng" align="right">
           <template slot-scope="scope">
-            <span>{{ `${scope.row.quantity} ${scope.row.unit}` }}</span>
+            <span>{{ `${scope.row.quantity} ${scope.row.unit || ""}` }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="unitPrice" label="Đơn giá" align="right">
           <template slot-scope="scope">
-            <span>{{ scope.row.unitPrice.toLocaleString() }}</span>
+            <span>{{
+              scope.row.unitPrice && scope.row.unitPrice.toLocaleString()
+            }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="subTotal" label="Thành tiền" align="right">
+        <el-table-column prop="subtotal" label="Thành tiền" align="right">
           <template slot-scope="scope">
-            <span>{{ scope.row.subTotal.toLocaleString() }}</span>
+            <span>{{
+              scope.row.subtotal && scope.row.subtotal.toLocaleString()
+            }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -124,14 +128,12 @@ export default {
             quantity: 1,
             unit: "Ngày",
             unitPrice: 300000,
-            subTotal: 300000
+            subtotal: 300000
           }
         ],
         sum: {
-          content: "Tổng cộng",
-          quantity: "",
-          unitPrice: "",
-          subTotal: 300000
+          type: Number,
+          default: 0
         }
       })
     }
@@ -154,11 +156,12 @@ export default {
       window.print();
     },
     getSummary() {
-      const sumArray = Object.values(this.tableData.sum).map(each => {
-        if (Number.isInteger(each)) return each.toLocaleString();
-        else return each;
-      });
-      return sumArray;
+      let summaries = [];
+      summaries[0] = "Tổng hóa đơn";
+      summaries[1] = null;
+      summaries[2] = null;
+      summaries[3] = this.tableData.sum;
+      return summaries;
     }
   }
 };
